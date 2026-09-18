@@ -1,0 +1,7 @@
+import { ArrowUpRight } from "lucide-react";
+import { Roadmap } from "@/components/roadmap";
+import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+
+export default function AboutPage() {
+  return <div className="site-shell"><SiteHeader /><main><section className="inner-hero section-pad"><p className="eyebrow">01 / ABOUT CPC</p><h1>A room for<br /><em>better thinking.</em></h1><p className="inner-lede">We teach people to code without AI by building the durable problem-solving skill that lasts beyond any one tool.</p></section><section className="manifesto section-pad"><div className="section-label"><span>01</span><span>WHY THIS CLUB EXISTS</span></div><div className="manifesto-grid"><h2>“I don&apos;t get DSA” is a <em>starting point.</em></h2><div><p className="large-copy">The gap between knowing syntax and knowing how to think is where we work. CPC is a peer-led room for making that gap smaller, one problem at a time.</p><p className="muted-copy">No gatekeeping. No magic prompts. Just good questions, stubborn curiosity, and a team that gets better in public.</p><a className="arrow-link" href="#path">See the learning path <ArrowUpRight size={17} /></a></div></div><div className="stat-row"><div><strong>01</strong><span>shared language</span></div><div><strong>∞</strong><span>ways to solve</span></div><div><strong>0</strong><span>black-box answers</span></div><div><strong>1</strong><span>team mindset</span></div></div></section><Roadmap /></main><SiteFooter /></div>;
+}

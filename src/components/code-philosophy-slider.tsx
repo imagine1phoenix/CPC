@@ -1,0 +1,10 @@
+"use client";
+
+import { ArrowLeftRight, Check, Clock3 } from "lucide-react";
+import { useState } from "react";
+
+export function CodePhilosophySlider() {
+  const [position, setPosition] = useState(50);
+
+  return <section className="philosophy-section section-pad"><div className="section-label"><span>02</span><span>THE CPC STANDARD</span></div><div className="philosophy-heading"><h2>Same problem.<br /><em>Different habit.</em></h2><p>We do not worship cleverness. We practice choosing the right shape of solution before the code gets loud.</p></div><div className="philosophy-slider"><div className="philosophy-track"><div className="philosophy-side philosophy-ai philosophy-layer" style={{ width: `${position}%` }}><span className="philosophy-label">AI GENERATED CODE</span><div className="code-comparison"><p><span>for</span> (i = 0; i &lt; n; i++) {'{'}</p><p>  <span>for</span> (j = 0; j &lt; n; j++) {'{'}</p><p>    <span>if</span> (a[i] == a[j])</p><p>      count++;</p><p>  {'}'}</p><p>{'}'}</p></div><div className="complexity bad"><Clock3 size={15} /> O(N²) / checks everything</div></div><div className="philosophy-side philosophy-human philosophy-layer" style={{ left: `${position}%`, width: `${100 - position}%` }}><span className="philosophy-label">CPC HUMAN CODE</span><div className="code-comparison"><p><span>unordered_map</span>&lt;int, int&gt; seen;</p><p><span>for</span> (<span>int</span> value : a) {'{'}</p><p>  seen[value]++;</p><p>{'}'}</p><p><span>return</span> seen;</p></div><div className="complexity good"><Check size={15} /> O(N) / one clean pass</div></div><div className="slider-handle" style={{ left: `${position}%` }}><ArrowLeftRight size={16} /></div></div><label className="visually-hidden" htmlFor="philosophy-range">Compare code approaches</label><input className="philosophy-range" id="philosophy-range" type="range" min="0" max="100" value={position} onChange={(event) => setPosition(Number(event.target.value))} /></div><p className="philosophy-caption">Drag to compare the habits. The point is not that humans are always right. The point is learning to inspect the tradeoff.</p></section>;
+}
