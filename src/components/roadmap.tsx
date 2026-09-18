@@ -21,21 +21,47 @@ const roadmapNodes: RoadmapNode[] = [
 
 export function Roadmap() {
   const [selected, setSelected] = useState<RoadmapNode | null>(null);
+  const [progress, setProgress] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
+    const hydrationTimer = window.setTimeout(() => {
+      try {
+        const savedProgress = window.localStorage.getItem("cpc-roadmap-progress");
+        if (savedProgress) setProgress(JSON.parse(savedProgress) as Record<string, boolean>);
+      } catch {
+        // Local storage can be unavailable in private browsing contexts.
+      }
+    }, 0);
+
     function closeOnEscape(event: KeyboardEvent) {
       if (event.key === "Escape") setSelected(null);
     }
     window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    return () => {
+      window.clearTimeout(hydrationTimer);
+      window.removeEventListener("keydown", closeOnEscape);
+    };
   }, []);
 
+  function toggleProblem(problemCode: string) {
+    const nextProgress = { ...progress, [problemCode]: !progress[problemCode] };
+    setProgress(nextProgress);
+    try {
+      window.localStorage.setItem("cpc-roadmap-progress", JSON.stringify(nextProgress));
+    } catch {
+      // Progress still works for the current session when storage is unavailable.
+    }
+  }
+
   return <>
-    <section className="roadmap-section section-pad" id="path"><div className="section-label"><span>02</span><span>THE LEARNING PATH</span></div><div className="section-heading"><h2>No more<br /><em>guessing.</em></h2><p>Pick a node. Solve three problems. Move when the pattern starts to feel familiar.</p></div><div className="roadmap-tree"><div className="roadmap-level level-one"><span className="level-marker">01 / START</span>{roadmapNodes.slice(0, 2).map((node) => <RoadmapNodeButton key={node.title} node={node} onSelect={setSelected} />)}</div><div className="roadmap-connector"><span /><span /></div><div className="roadmap-level level-two"><span className="level-marker">02 / BUILD</span>{roadmapNodes.slice(2, 4).map((node) => <RoadmapNodeButton key={node.title} node={node} onSelect={setSelected} />)}</div><div className="roadmap-connector"><span /><span /></div><div className="roadmap-level level-three"><span className="level-marker">03 / THINK</span>{roadmapNodes.slice(4).map((node) => <RoadmapNodeButton key={node.title} node={node} onSelect={setSelected} />)}</div></div><p className="roadmap-note"><BookOpen size={15} /> Every node is a conversation starter, not a finish line.</p></section>
-  {selected && <div className="roadmap-modal-backdrop" role="presentation" onClick={() => setSelected(null)}><div className="roadmap-modal" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" aria-label="Close problem list" onClick={() => setSelected(null)}><X size={18} /></button><span className="eyebrow">{selected.level} / PRACTICE SET</span><h2 id="roadmap-modal-title">{selected.title}</h2><p>{selected.description}</p><div className="problem-list">{selected.problems.map((problem) => <a href={problem.href} target="_blank" rel="noreferrer" key={problem.code}><span>{problem.code}</span><strong>{problem.title}</strong><ArrowUpRight size={16} /></a>)}</div><button className="modal-next" onClick={() => setSelected(null)}>Back to the path <ChevronRight size={16} /></button></div></div>}
+    <section className="roadmap-section section-pad" id="path"><div className="section-label"><span>02</span><span>THE LEARNING PATH</span></div><div className="section-heading"><h2>No more<br /><em>guessing.</em></h2><p>Pick a node. Solve three problems. Move when the pattern starts to feel familiar.</p></div><div className="roadmap-tree"><div className="roadmap-level level-one"><span className="level-marker">01 / START</span>{roadmapNodes.slice(0, 2).map((node) => <RoadmapNodeButton key={node.title} node={node} progress={progress} onSelect={setSelected} />)}</div><div className="roadmap-connector"><span /><span /></div><div className="roadmap-level level-two"><span className="level-marker">02 / BUILD</span>{roadmapNodes.slice(2, 4).map((node) => <RoadmapNodeButton key={node.title} node={node} progress={progress} onSelect={setSelected} />)}</div><div className="roadmap-connector"><span /><span /></div><div className="roadmap-level level-three"><span className="level-marker">03 / THINK</span>{roadmapNodes.slice(4).map((node) => <RoadmapNodeButton key={node.title} node={node} progress={progress} onSelect={setSelected} />)}</div></div><p className="roadmap-note"><BookOpen size={15} /> Your progress stays on this device. Every node is a conversation starter, not a finish line.</p></section>
+  {selected && <div className="roadmap-modal-backdrop" role="presentation" onClick={() => setSelected(null)}><div className="roadmap-modal" role="dialog" aria-modal="true" aria-labelledby="roadmap-modal-title" onClick={(event) => event.stopPropagation()}><button className="modal-close" aria-label="Close problem list" onClick={() => setSelected(null)}><X size={18} /></button><span className="eyebrow">{selected.level} / PRACTICE SET</span><h2 id="roadmap-modal-title">{selected.title}</h2><p>{selected.description}</p><div className="problem-list">{selected.problems.map((problem) => <div className={`problem-list-item ${progress[problem.code] ? "is-complete" : ""}`} key={problem.code}><label><input type="checkbox" checked={Boolean(progress[problem.code])} onChange={() => toggleProblem(problem.code)} /><span>Done</span></label><a href={problem.href} target="_blank" rel="noreferrer"><span>{problem.code}</span><strong>{problem.title}</strong><ArrowUpRight size={16} /></a></div>)}</div><button className="modal-next" onClick={() => setSelected(null)}>Back to the path <ChevronRight size={16} /></button></div></div>}
   </>;
 }
 
-function RoadmapNodeButton({ node, onSelect }: { node: RoadmapNode; onSelect: (node: RoadmapNode) => void }) {
-  return <button className="roadmap-node" onClick={() => onSelect(node)}><span>{node.level}</span><strong>{node.title}</strong><small>{node.description}</small><i>3 problems <ArrowUpRight size={14} /></i></button>;
+function RoadmapNodeButton({ node, progress, onSelect }: { node: RoadmapNode; progress: Record<string, boolean>; onSelect: (node: RoadmapNode) => void }) {
+  const completedCount = node.problems.filter((problem) => progress[problem.code]).length;
+  const isComplete = completedCount === node.problems.length;
+
+  return <button className={`roadmap-node ${isComplete ? "is-complete" : ""}`} onClick={() => onSelect(node)}><span>{node.level}</span><strong>{node.title}</strong><small>{node.description}</small><span className="roadmap-progress" aria-label={`${completedCount} of ${node.problems.length} problems complete`}><span style={{ width: `${(completedCount / node.problems.length) * 100}%` }} /></span><i>{completedCount > 0 ? `${completedCount}/3 problems` : "3 problems"} <ArrowUpRight size={14} /></i></button>;
 }
