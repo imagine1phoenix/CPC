@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Syne } from "next/font/google";
+import { GraphNetwork } from "@/components/graph-network";
 import "./globals.css";
 
 const bodyFont = Space_Grotesk({
@@ -21,7 +22,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`h-full antialiased ${bodyFont.variable} ${displayFont.variable}`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col relative">
+        <div className="site-network-bg"><GraphNetwork /></div>
+        {children}
+      </body>
     </html>
   );
 }

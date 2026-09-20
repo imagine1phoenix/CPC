@@ -3,11 +3,16 @@
 import Particles, { ParticlesProvider } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { useReducedMotion } from "framer-motion";
+import { useCallback } from "react";
 
 export function GraphNetwork() {
   const shouldReduceMotion = useReducedMotion();
 
-  return <ParticlesProvider init={async (engine) => { await loadSlim(engine); }}><Particles
+  const particlesInit = useCallback(async (engine: any) => {
+    await loadSlim(engine);
+  }, []);
+
+  return <ParticlesProvider init={particlesInit}><Particles
       className="graph-network"
       id="about-graph-network"
       options={{
@@ -27,12 +32,12 @@ export function GraphNetwork() {
           },
         },
         particles: {
-          color: { value: "#8e918b" },
+          color: { value: "#00ffff" },
           links: {
-            color: "#8e918b",
+            color: "#00ffff",
             distance: 135,
             enable: true,
-            opacity: 0.22,
+            opacity: 0.15,
             width: 1,
           },
           move: {
