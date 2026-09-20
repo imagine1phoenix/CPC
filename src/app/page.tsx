@@ -6,18 +6,21 @@ import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { impactStats } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: "CPC | Competitive Programming Club",
-  description: "Competitive programming for students who want to understand the code — not just see AI code. Weekly sessions, real algorithms, zero shortcuts.",
+  title: "CPC | Competitive Programming Club · Jain University",
+  description:
+    "Jain University's peer-led programming club. From confused beginner to confident problem solver — learn algorithms from first principles with zero gatekeeping.",
   openGraph: {
-    title: "CPC | Competitive Programming Club",
-    description: "Competitive programming for students who want to understand the code — not just see AI code. Weekly sessions, real algorithms, zero shortcuts.",
+    title: "CPC | Competitive Programming Club · Jain University",
+    description:
+      "From confused beginner to confident problem solver — learn algorithms from first principles with zero gatekeeping.",
     type: "website",
-    images: [{ url: "/og-home.png", width: 1200, height: 630, alt: "CPC — No AI. Just Code." }],
+    images: [{ url: "/og-home.png", width: 1200, height: 630, alt: "CPC — Jain University Programming Club" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "CPC | Competitive Programming Club",
-    description: "Competitive programming for students who want to understand the code — not just see AI code.",
+    description:
+      "From confused beginner to confident problem solver — learn algorithms from first principles with zero gatekeeping.",
   },
 };
 
@@ -33,27 +36,33 @@ export default function Home() {
     <div className="site-shell">
       <SiteHeader />
       <main>
-        <section className="hero section-pad">
+        <section className="hero">
           <div className="hero-copy reveal-up">
             <h1>
-              No AI.<br />
-              <em>Just Code.</em><br />
-              Write It <span>Yourself.</span>
+              Confused about DSA?<br />
+              <em>Start here.</em><br />
+              Build real <span>intuition.</span>
             </h1>
             <p className="hero-intro">
-              CPC is Jain University&apos;s peer-led problem-solving club — weekly sessions,
-              real algorithms, zero shortcuts.
+              CPC is Jain University&apos;s peer-led programming club. Whether you&apos;ve never solved
+              a single problem or don&apos;t know where to begin, we break down algorithms from first principles —
+              together, weekly, with zero gatekeeping.
             </p>
+            <div className="hero-badges">
+              <span className="hero-badge-pill">✓ Beginners welcome</span>
+              <span className="hero-badge-pill">✓ Zero prerequisites</span>
+              <span className="hero-badge-pill">✓ Weekly peer rooms</span>
+            </div>
             <div className="hero-actions">
               <a className="button button-hero-cta" href="/join">
                 Join the Club <MoveRight size={18} />
               </a>
-              <a className="button button-outline-lime" href="/join#core-team">
-                Apply for Core Team <ArrowUpRight size={16} />
+              <a className="button button-outline-lime" href="/path">
+                View Learning Path <ArrowUpRight size={16} />
               </a>
             </div>
             <a className="text-link hero-why-link" href="/about">
-              ↓ See how it actually works <ArrowUpRight size={15} />
+              See how our peer sessions work <ArrowUpRight size={15} />
             </a>
           </div>
           <div className="hero-art" aria-hidden="true">
@@ -62,12 +71,12 @@ export default function Home() {
             <div className="orbit orbit-three" />
             <AnimatedCodeWindow />
             <div className="hero-sticker">
-              NO SHORTCUTS<br />
-              <strong>JUST SIGNAL</strong>
+              ALL LEVELS<br />
+              <strong>ZERO PREREQS</strong>
             </div>
             <div className="hero-index">
-              [ 01 / 04 ]<br />
-              <span>THE FIRST<br />MOVE IS YOURS</span>
+              [ JAIN UNIVERSITY ]<br />
+              <span>EVERY CODER<br />STARTS AT ZERO</span>
             </div>
           </div>
           <div className="scroll-cue">
@@ -97,7 +106,7 @@ export default function Home() {
 
         <div className="ticker">
           <div className="ticker-track">
-            LEARN THE PATTERN <span>✳</span> SHARE THE APPROACH <span>✳</span> REVIEW THE EDGE CASE <span>✳</span> LEARN THE PATTERN <span>✳</span> SHARE THE APPROACH <span>✳</span>
+            NO GATEKEEPING <span>✳</span> LEARN THE PATTERN <span>✳</span> ASK ANY QUESTION <span>✳</span> BUILD INTUITION <span>✳</span> SOLVE TOGETHER <span>✳</span> NO GATEKEEPING <span>✳</span> LEARN THE PATTERN <span>✳</span>
           </div>
         </div>
 
@@ -109,9 +118,9 @@ export default function Home() {
             <span>FIND YOUR NEXT MOVE</span>
           </div>
           <div className="home-link-grid">
-            <a href="/about">
-              <span>01 / ABOUT</span>
-              <h2>Understand<br /><em>the why.</em></h2>
+            <a href="/path">
+              <span>01 / THE PATH</span>
+              <h2>Step-by-step<br /><em>roadmap.</em></h2>
               <ArrowUpRight />
             </a>
             <a href="/resources">
@@ -121,7 +130,7 @@ export default function Home() {
             </a>
             <a href="/events">
               <span>03 / EVENTS</span>
-              <h2>Put ideas<br /><em>in motion.</em></h2>
+              <h2>Weekly peer<br /><em>sessions.</em></h2>
               <ArrowUpRight />
             </a>
           </div>

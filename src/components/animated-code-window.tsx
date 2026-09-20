@@ -1,9 +1,9 @@
 "use client";
 
-import { Code2 } from "lucide-react";
+import { Lightbulb } from "lucide-react";
 import { useEffect, useState } from "react";
 
-const lineCount = 14;
+const lineCount = 18;
 
 export function AnimatedCodeWindow() {
   const [visibleLines, setVisibleLines] = useState(0);
@@ -18,7 +18,7 @@ export function AnimatedCodeWindow() {
         }
         return current + 1;
       });
-    }, 115);
+    }, 110);
 
     const compileTimer = window.setInterval(() => {
       setProgress((current) => {
@@ -28,7 +28,7 @@ export function AnimatedCodeWindow() {
         }
         return Math.min(current + 10, 100);
       });
-    }, 190);
+    }, 170);
 
     return () => {
       window.clearInterval(revealTimer);
@@ -41,24 +41,37 @@ export function AnimatedCodeWindow() {
 
   return (
     <div className="code-window">
-      <div className="window-bar"><span /><span /><span /><b>template.cpp</b></div>
+      <div className="window-bar">
+        <span />
+        <span />
+        <span />
+        <b>how_we_think.cpp</b>
+      </div>
       <pre>
-        <span className={lineClass(1)}><span className="syntax-purple">#include</span> <span className="syntax-blue">&lt;bits/stdc++.h&gt;</span></span>
-        <span className={lineClass(2)}><span className="syntax-orange">using namespace</span> std;</span>
+        <span className={lineClass(1)}><span className="syntax-purple">// 01. Understand on paper first</span></span>
+        <span className={lineClass(2)}><span className="syntax-orange">// &quot;Find if any duplicate exists in a list&quot;</span></span>
         <span className={lineClass(3, "empty-line")}>&nbsp;</span>
-        <span className={lineClass(4)}><span className="syntax-purple">using ll</span> = <span className="syntax-blue">long long</span>;</span>
-        <span className={lineClass(5, "empty-line")}>&nbsp;</span>
-        <span className={lineClass(6)}><span className="syntax-purple">void</span> <span className="syntax-blue">solve</span>() {'{'}</span>
-        <span className={lineClass(7)}>  <span className="syntax-orange">{'// think, then code'}</span></span>
-        <span className={lineClass(8)}>{'}'}</span>
-        <span className={lineClass(9, "empty-line")}>&nbsp;</span>
-        <span className={lineClass(10)}><span className="syntax-purple">int</span> main() {'{'}</span>
-        <span className={lineClass(11)}>  ios::sync_with_stdio(<span className="syntax-lime">false</span>);</span>
-        <span className={lineClass(12)}>  cin.tie(<span className="syntax-lime">nullptr</span>);</span>
-        <span className={lineClass(13)}>  solve();</span>
-        <span className={lineClass(14)}>{'}'}</span>
+        <span className={lineClass(4)}><span className="syntax-purple">// 02. Natural first instinct: check every pair</span></span>
+        <span className={lineClass(5)}><span className="syntax-blue">for</span> (<span>int</span> i = 0; i &lt; n; i++) &#123;</span>
+        <span className={lineClass(6)}>  <span className="syntax-blue">for</span> (<span>int</span> j = i + 1; j &lt; n; j++) &#123;</span>
+        <span className={lineClass(7)}>    <span className="syntax-purple">if</span> (a[i] == a[j]) <span className="syntax-blue">return</span> <span className="syntax-lime">true</span>;</span>
+        <span className={lineClass(8)}>  &#125;</span>
+        <span className={lineClass(9)}>&#125;</span>
+        <span className={lineClass(10, "empty-line")}>&nbsp;</span>
+        <span className={lineClass(11)}><span className="syntax-purple">// 03. The CPC shift: remember what we saw</span></span>
+        <span className={lineClass(12)}>unordered_set&lt;<span>int</span>&gt; seen;</span>
+        <span className={lineClass(13)}><span className="syntax-blue">for</span> (<span>int</span> x : a) &#123;</span>
+        <span className={lineClass(14)}>  <span className="syntax-purple">if</span> (seen.count(x)) <span className="syntax-blue">return</span> <span className="syntax-lime">true</span>;</span>
+        <span className={lineClass(15)}>  seen.insert(x);</span>
+        <span className={lineClass(16)}>&#125;</span>
+        <span className={lineClass(17, "empty-line")}>&nbsp;</span>
+        <span className={lineClass(18)}><span className="syntax-lime">// 04. No tricks. Just clear intuition.</span></span>
       </pre>
-      <div className="code-status"><Code2 size={14} /> {progress < 100 ? "compiling thought..." : "thought compiled"} <span>{progress}%</span></div>
+      <div className="code-status">
+        <Lightbulb size={13} />
+        <span>weekly peer breakdown</span>
+        <span>{progress < 100 ? "building intuition..." : "intuition unlocked"}</span>
+      </div>
     </div>
   );
 }

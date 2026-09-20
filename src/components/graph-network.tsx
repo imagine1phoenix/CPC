@@ -73,12 +73,12 @@ export function GraphNetwork({ id = "cpc-global-graph-network", className = "gra
               },
             },
             particles: {
-              color: { value: ["#00ffff", "#00ff88"] },
+              color: { value: ["#18FEC1", "#0AD28C"] },
               links: {
-                color: "#00ffff",
+                color: "#18FEC1",
                 distance: 130,
                 enable: true,
-                opacity: 0.16,
+                opacity: 0.18,
                 width: 1,
               },
               move: {
