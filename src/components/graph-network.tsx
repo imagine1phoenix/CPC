@@ -48,7 +48,7 @@ export function GraphNetwork({ id = "cpc-global-graph-network", className = "gra
   }, []);
 
   return (
-    <div ref={wrapperRef} style={{ position: "contents" }}>
+    <div ref={wrapperRef} style={{ display: "contents" }}>
       <ParticlesProvider init={particlesInit}>
         <Particles
           className={className}

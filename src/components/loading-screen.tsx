@@ -1,85 +1,123 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
-const BOOT_LINES = [
-  { text: "> initializing CPC...", delay: 200 },
-  { text: "> loading algorithm library...", delay: 600 },
-  { text: "> mounting problem set [1,432 solved]...", delay: 1000 },
-  { text: "> syncing leaderboard...", delay: 1400 },
-  { text: "> no shortcuts detected.", delay: 1800 },
-  { text: "> system ready.", delay: 2200 },
+const STAGES = [
+  { threshold: 0, text: "INITIALIZING RUNTIME" },
+  { threshold: 25, text: "CALIBRATING ALGORITHMS" },
+  { threshold: 55, text: "MOUNTING PROBLEM REPOSITORIES" },
+  { threshold: 82, text: "SYNCHRONIZING CONTEST ENGINE" },
+  { threshold: 100, text: "VERDICT: ACCEPTED // READY" },
 ];
 
-const FADE_START = 2700;
-const UNMOUNT_DELAY = 3350;
+const DURATION = 2000; // time in ms to count to 100%
+const FADE_START = 2450; // start fade out
+const UNMOUNT_DELAY = 3050; // unmount completely from DOM
 
 export function LoadingScreen() {
-  const [lines, setLines] = useState<string[]>([]);
   const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState(STAGES[0].text);
   const [fading, setFading] = useState(false);
   const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
+    const startTime = performance.now();
+    let animFrameId: number;
 
-    // Schedule each boot line
-    BOOT_LINES.forEach(({ text, delay }, i) => {
-      timers.push(
-        setTimeout(() => {
-          setLines((prev) => [...prev, text]);
-          setProgress(Math.round(((i + 1) / BOOT_LINES.length) * 100));
-        }, delay)
-      );
-    });
+    const update = (now: number) => {
+      const elapsed = now - startTime;
+      const pct = Math.min(100, Math.round((elapsed / DURATION) * 100));
+      setProgress(pct);
 
-    // Start fade-out
-    timers.push(setTimeout(() => setFading(true), FADE_START));
-    // Remove from DOM after transition completes
-    timers.push(setTimeout(() => setGone(true), UNMOUNT_DELAY));
+      for (let i = STAGES.length - 1; i >= 0; i--) {
+        if (pct >= STAGES[i].threshold) {
+          setStatus(STAGES[i].text);
+          break;
+        }
+      }
 
-    return () => timers.forEach(clearTimeout);
+      if (pct < 100) {
+        animFrameId = requestAnimationFrame(update);
+      }
+    };
+
+    animFrameId = requestAnimationFrame(update);
+
+    const fadeTimer = setTimeout(() => setFading(true), FADE_START);
+    const unmountTimer = setTimeout(() => setGone(true), UNMOUNT_DELAY);
+
+    return () => {
+      cancelAnimationFrame(animFrameId);
+      clearTimeout(fadeTimer);
+      clearTimeout(unmountTimer);
+    };
   }, []);
 
   if (gone) return null;
+
+  const isComplete = progress === 100;
 
   return (
     <div
       className={`ls-overlay${fading ? " ls-fade" : ""}`}
       aria-hidden="true"
+      role="status"
+      aria-label="Loading Competitive Programming Club"
     >
-      {/* CRT scanline */}
+      {/* Background ambient overlays */}
       <div className="ls-scanlines" />
+      <div className="ls-grid-bg" />
 
-      <div className="ls-content">
-        {/* Logo */}
-        <div className="ls-logo">
-          <span className="ls-logo-cpc">CPC</span>
-          <span className="ls-logo-slash">//</span>
-          <span className="ls-logo-sub">COMPETITIVE PROGRAMMING CLUB</span>
+      {/* Main Content Unit */}
+      <div className="ls-card">
+        {/* Transparent Seamless Club Logo */}
+        <div className="ls-logo-container">
+          <Image
+            src="/cpc-logo-transparent.png"
+            alt="Competitive Programming Club Logo"
+            width={280}
+            height={112}
+            priority
+            className="ls-club-logo"
+          />
         </div>
 
-        {/* Boot lines */}
-        <div className="ls-terminal" role="status" aria-live="polite">
-          {lines.map((line, i) => (
-            <p
-              key={i}
-              className={`ls-line${i === lines.length - 1 ? " ls-line-active" : ""}`}
+        {/* High-Tech HUD Metric & Progress Indicator */}
+        <div className="ls-hud">
+          {/* Status ticker + digital percentage */}
+          <div className="ls-hud-header">
+            <div className="ls-status-wrap">
+              <span className={`ls-dot${isComplete ? " ls-dot-complete" : ""}`} />
+              <span className={`ls-status-text${isComplete ? " ls-status-complete" : ""}`}>
+                {status}
+              </span>
+            </div>
+            <span className="ls-pct-display">
+              {progress < 10 ? `0${progress}` : progress}%
+            </span>
+          </div>
+
+          {/* Precision Segmented Neon Meter */}
+          <div className="ls-meter">
+            <div
+              className="ls-meter-fill"
+              style={{ width: `${progress}%` }}
             >
-              {line}
-              {i === lines.length - 1 && <span className="ls-cursor" />}
-            </p>
-          ))}
-        </div>
+              <div className="ls-meter-flare" />
+            </div>
+          </div>
 
-        {/* Progress bar */}
-        <div className="ls-bar-track">
-          <div className="ls-bar-fill" style={{ width: `${progress}%` }} />
-          <span className="ls-bar-pct">{progress}%</span>
+          {/* Telemetry Footer */}
+          <div className="ls-meta">
+            <span className="ls-meta-cell">CPC // SYSTEM.ONLINE</span>
+            <span className="ls-meta-cell ls-meta-center">BUILD: 2026.PROD</span>
+            <span className="ls-meta-cell ls-meta-right">O(1) COMPLEXITY</span>
+          </div>
         </div>
       </div>
 
-      {/* Corner decorations */}
+      {/* Corner accents */}
       <span className="ls-corner ls-tl" />
       <span className="ls-corner ls-tr" />
       <span className="ls-corner ls-bl" />
