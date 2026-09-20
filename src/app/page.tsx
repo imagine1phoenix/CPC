@@ -1,9 +1,133 @@
+import type { Metadata } from "next";
 import { ArrowUpRight, MoveRight } from "lucide-react";
 import { AnimatedCodeWindow } from "@/components/animated-code-window";
 import { CodePhilosophySlider } from "@/components/code-philosophy-slider";
 import { SiteFooter, SiteHeader } from "@/components/site-chrome";
 import { impactStats } from "@/content/site";
 
+export const metadata: Metadata = {
+  title: "CPC | Competitive Programming Club",
+  description: "Competitive programming for students who want to understand the code — not just see AI code. Weekly sessions, real algorithms, zero shortcuts.",
+  openGraph: {
+    title: "CPC | Competitive Programming Club",
+    description: "Competitive programming for students who want to understand the code — not just see AI code. Weekly sessions, real algorithms, zero shortcuts.",
+    type: "website",
+    images: [{ url: "/og-home.png", width: 1200, height: 630, alt: "CPC — No AI. Just Code." }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CPC | Competitive Programming Club",
+    description: "Competitive programming for students who want to understand the code — not just see AI code.",
+  },
+};
+
+const statLinks: Record<string, string> = {
+  "teams forming": "/join",
+  "next seminar": "/events",
+  "problems solved": "/path",
+  "shared standard": "/about",
+};
+
 export default function Home() {
-  return <div className="site-shell"><SiteHeader /><main><section className="hero section-pad"><div className="hero-copy reveal-up"><h1>No AI.<br /><em>Just Code.</em><br />Write It <span>Yourself.</span></h1><p className="hero-intro">Competitive programming for students who want to understand the code, not just to see AI code.</p><div className="hero-actions"><a className="button button-hero-cta" href="/join">Apply for the Core Team <MoveRight size={18} /></a><a className="text-link" href="/about">Why competitive programming? <ArrowUpRight size={15} /></a></div></div><div className="hero-art" aria-hidden="true"><div className="orbit orbit-one" /><div className="orbit orbit-two" /><div className="orbit orbit-three" /><AnimatedCodeWindow /><div className="hero-sticker">NO SHORTCUTS<br /><strong>JUST SIGNAL</strong></div><div className="hero-index">[ 01 / 04 ]<br /><span>THE FIRST<br />MOVE IS YOURS</span></div></div><div className="scroll-cue"><span>EXPLORE THE CLUB</span><div /></div></section><div className="impact-ticker"><div className="impact-track">{impactStats.map((stat) => <div className="impact-stat" key={stat.label}><strong>{stat.value}</strong><span>{stat.label}</span></div>)}</div></div><div className="ticker"><div className="ticker-track">LEARN THE PATTERN <span>✳</span> SHARE THE APPROACH <span>✳</span> REVIEW THE EDGE CASE <span>✳</span> LEARN THE PATTERN <span>✳</span> SHARE THE APPROACH <span>✳</span></div></div><CodePhilosophySlider /><section className="home-links section-pad"><div className="section-label"><span>03</span><span>FIND YOUR NEXT MOVE</span></div><div className="home-link-grid"><a href="/about"><span>01 / ABOUT</span><h2>Understand<br /><em>the why.</em></h2><ArrowUpRight /></a><a href="/resources"><span>02 / RESOURCES</span><h2>Practice<br /><em>with intent.</em></h2><ArrowUpRight /></a><a href="/events"><span>03 / EVENTS</span><h2>Put ideas<br /><em>in motion.</em></h2><ArrowUpRight /></a></div></section></main><SiteFooter /></div>;
+  return (
+    <div className="site-shell">
+      <SiteHeader />
+      <main>
+        <section className="hero section-pad">
+          <div className="hero-copy reveal-up">
+            <h1>
+              No AI.<br />
+              <em>Just Code.</em><br />
+              Write It <span>Yourself.</span>
+            </h1>
+            <p className="hero-intro">
+              CPC is Jain University&apos;s peer-led problem-solving club — weekly sessions,
+              real algorithms, zero shortcuts.
+            </p>
+            <div className="hero-actions">
+              <a className="button button-hero-cta" href="/join">
+                Join the Club <MoveRight size={18} />
+              </a>
+              <a className="button button-outline-lime" href="/join#core-team">
+                Apply for Core Team <ArrowUpRight size={16} />
+              </a>
+            </div>
+            <a className="text-link hero-why-link" href="/about">
+              ↓ See how it actually works <ArrowUpRight size={15} />
+            </a>
+          </div>
+          <div className="hero-art" aria-hidden="true">
+            <div className="orbit orbit-one" />
+            <div className="orbit orbit-two" />
+            <div className="orbit orbit-three" />
+            <AnimatedCodeWindow />
+            <div className="hero-sticker">
+              NO SHORTCUTS<br />
+              <strong>JUST SIGNAL</strong>
+            </div>
+            <div className="hero-index">
+              [ 01 / 04 ]<br />
+              <span>THE FIRST<br />MOVE IS YOURS</span>
+            </div>
+          </div>
+          <div className="scroll-cue">
+            <span>EXPLORE THE CLUB</span>
+            <div />
+          </div>
+        </section>
+
+        <div className="impact-ticker">
+          <div className="impact-track">
+            {impactStats.map((stat) => {
+              const href = statLinks[stat.label];
+              return href ? (
+                <a className="impact-stat impact-stat-link" href={href} key={stat.label}>
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </a>
+              ) : (
+                <div className="impact-stat" key={stat.label}>
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="ticker">
+          <div className="ticker-track">
+            LEARN THE PATTERN <span>✳</span> SHARE THE APPROACH <span>✳</span> REVIEW THE EDGE CASE <span>✳</span> LEARN THE PATTERN <span>✳</span> SHARE THE APPROACH <span>✳</span>
+          </div>
+        </div>
+
+        <CodePhilosophySlider />
+
+        <section className="home-links section-pad">
+          <div className="section-label">
+            <span>03</span>
+            <span>FIND YOUR NEXT MOVE</span>
+          </div>
+          <div className="home-link-grid">
+            <a href="/about">
+              <span>01 / ABOUT</span>
+              <h2>Understand<br /><em>the why.</em></h2>
+              <ArrowUpRight />
+            </a>
+            <a href="/resources">
+              <span>02 / RESOURCES</span>
+              <h2>Practice<br /><em>with intent.</em></h2>
+              <ArrowUpRight />
+            </a>
+            <a href="/events">
+              <span>03 / EVENTS</span>
+              <h2>Put ideas<br /><em>in motion.</em></h2>
+              <ArrowUpRight />
+            </a>
+          </div>
+        </section>
+      </main>
+      <SiteFooter />
+    </div>
+  );
 }
