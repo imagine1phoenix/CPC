@@ -113,3 +113,42 @@ footer { align-items: center; background: var(--ink); color: var(--paper); displ
 .hero-art { min-height: 610px; }.orbit-one { height: 520px; left: 8%; top: 6%; width: 520px; }.orbit-two { height: 440px; left: 17%; top: 13%; width: 590px; }.orbit-three { height: 330px; left: 28%; top: 22%; width: 450px; }.code-window { border: 1px solid rgba(231, 255, 208, .36); box-shadow: none; left: 7%; overflow: visible; top: 20%; width: min(500px, 82vw); }.code-window::after { border-bottom: 11px solid var(--lime); border-right: 11px solid var(--lime); bottom: -16px; content: ""; left: 16px; pointer-events: none; position: absolute; right: -16px; top: 16px; z-index: -1; }.hero-sticker { color: var(--paper); right: 1%; top: 2%; }.hero-index { bottom: 7%; right: 0; }
 @media (max-width: 900px) and (min-width: 751px) { .hero-art { min-height: 560px; }.orbit-one { height: 420px; width: 420px; }.orbit-two { height: 350px; width: 470px; }.orbit-three { height: 270px; width: 370px; }.code-window { left: 4%; width: min(500px, 82vw); } }
 @media (max-width: 750px) { .hero-art { min-height: 590px; }.orbit-one { height: 390px; left: 1%; top: 6%; width: 390px; }.orbit-two { height: 330px; left: 7%; top: 14%; width: 450px; }.orbit-three { height: 250px; left: 20%; top: 23%; width: 330px; }.code-window { left: 2%; top: 18%; width: min(500px, 91vw); }.hero-sticker { right: -2%; top: 0; }.hero-index { bottom: 1%; right: 2%; } }
+
+/* ─── LOADING SCREEN ───────────────────────────────────────────────────── */
+.ls-overlay {
+  align-items: center;
+  background: var(--paper);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  opacity: 1;
+  position: fixed;
+  transition: opacity .6s ease;
+  z-index: 9999;
+}
+.ls-overlay.ls-fade { opacity: 0; pointer-events: none; }
+.ls-scanlines {
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 136, .015) 2px, rgba(0, 255, 136, .015) 4px);
+  inset: 0; pointer-events: none; position: absolute; z-index: 0;
+}
+.ls-content { align-items: flex-start; display: flex; flex-direction: column; gap: 32px; position: relative; width: min(520px, 88vw); z-index: 1; }
+.ls-logo { align-items: baseline; display: flex; flex-wrap: wrap; gap: 12px; }
+.ls-logo-cpc { color: var(--ink); font-family: var(--font-display); font-size: clamp(3.5rem, 10vw, 5.5rem); font-weight: 800; letter-spacing: -.08em; line-height: 1; }
+.ls-logo-slash { color: var(--lime); font: 2rem/1 monospace; opacity: .7; }
+.ls-logo-sub { color: var(--muted); font: 9px/1 monospace; letter-spacing: .12em; align-self: center; flex-basis: 100%; margin-top: -6px; }
+.ls-terminal { display: flex; flex-direction: column; gap: 8px; min-height: 120px; }
+.ls-line { animation: ls-appear .25s ease both; color: var(--muted); font: 12px/1.5 monospace; margin: 0; }
+.ls-line-active { color: var(--lime); }
+@keyframes ls-appear { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+.ls-cursor { animation: ls-blink .8s step-end infinite; background: var(--lime); display: inline-block; height: .85em; margin-left: 4px; vertical-align: middle; width: 8px; }
+@keyframes ls-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+.ls-bar-track { align-items: center; background: rgba(0, 255, 136, .08); border: 1px solid rgba(0, 255, 136, .15); display: flex; gap: 12px; height: 3px; position: relative; width: 100%; }
+.ls-bar-fill { background: var(--lime); box-shadow: 0 0 12px rgba(0, 255, 136, .6); height: 100%; transition: width .35s ease; }
+.ls-bar-pct { color: var(--lime); font: 9px monospace; position: absolute; right: 0; top: 8px; }
+.ls-corner { border-color: rgba(0, 255, 136, .3); border-style: solid; height: 16px; position: fixed; width: 16px; }
+.ls-tl { border-width: 1px 0 0 1px; left: 24px; top: 24px; }
+.ls-tr { border-width: 1px 1px 0 0; right: 24px; top: 24px; }
+.ls-bl { border-width: 0 0 1px 1px; bottom: 24px; left: 24px; }
+.ls-br { border-width: 0 1px 1px 0; bottom: 24px; right: 24px; }
+@media (max-width: 750px) { .ls-tl, .ls-tr, .ls-bl, .ls-br { display: none; } .ls-logo-cpc { font-size: 3.2rem; } }
+@media (prefers-reduced-motion: reduce) { .ls-line { animation: none; } .ls-cursor { animation: none; } .ls-overlay { transition: none; } }
