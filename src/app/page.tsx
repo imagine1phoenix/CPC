@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { ArrowUpRight, MoveRight } from "lucide-react";
 import { AnimatedCodeWindow } from "@/components/animated-code-window";
 import { CodePhilosophySlider } from "@/components/code-philosophy-slider";
-import { SiteFooter, SiteHeader } from "@/components/site-chrome";
+import { SiteHeader } from "@/components/site-chrome";
+import InfiniteScroll from "@/components/infinite-scroll";
 import { impactStats } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -135,8 +136,10 @@ export default function Home() {
             </a>
           </div>
         </section>
+
+        {/* ─── LIVE INFINITE SCROLL FEED: ALL CHAPTERS PROGRESSIVELY LOADED ─── */}
+        <InfiniteScroll />
       </main>
-      <SiteFooter />
     </div>
   );
 }

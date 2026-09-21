@@ -15,19 +15,18 @@ export function CassetteTape({
   variant = "jain",
   className = "",
 }: CassetteTapeProps) {
-  // Authentic cassette assets matching the reference design
-  // The primary hero cassette from the user reference is Cassette.webp (translucent acrylic with index card)
+  // Custom-branded CPC cassette assets (trilogy of authentic mixtapes for CPC)
   const cassetteSrcMap: Record<string, string> = {
     jain: "/about/Cassette.webp",
-    craft: "/about/Cassette.webp", // "same cassette" as requested by user
-    cpc: "/about/Cassette.webp",   // "same cassette" as requested by user
+    craft: "/about/3.webp",
+    cpc: "/about/2.webp",
     "1": "/about/Cassette.webp",
     "2": "/about/2.webp",
     "3": "/about/3.webp",
-    same: "/about/Cassette.webp",
+    same: "/about/2.webp",
   };
 
-  const src = cassetteSrcMap[variant] || "/about/Cassette.webp";
+  const src = cassetteSrcMap[variant] || "/about/2.webp";
 
   return (
     <div className={`cassette-container ${className}`}>
